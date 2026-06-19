@@ -8,6 +8,7 @@
 </head>
 <body>
 
+    <!-- Menu de Navegação Superior Rápido -->
     <header class="main-header">
         <h2>TRANSJANOTTI</h2>
         <p>Controle de Baterias</p>
@@ -16,9 +17,9 @@
     <main class="container">
         <!-- TELA 1: DASHBOARD SIMPLES -->
         <section id="screen-dashboard" class="screen active">
-            <div class="alert-box green">🟢 48 Baterias em dia</div>
-            <div class="alert-box orange">🟠 5 Garantias vencendo em 30 dias</div>
-            <div class="alert-box red">🔴 2 Garantias vencidas</div>
+            <div class="alert-box green" id="dash-em-dia">🟢 48 Baterias em dia</div>
+            <div class="alert-box orange" id="dash-vencendo">🟠 5 Garantias vencendo em 30 dias</div>
+            <div class="alert-box red" id="dash-vencidas">🔴 2 Garantias vencidas</div>
             
             <div class="actions-grid">
                 <button onclick="switchScreen('screen-cadastro-bateria')" class="btn-main">➕ Nova Bateria</button>
@@ -59,14 +60,13 @@
                 
                 <div class="form-buttons">
                     <button type="submit" class="btn-save">💾 Salvar</button>
-                    <!-- NOVO BOTÃO: Apagar veículo de teste -->
                     <button type="button" onclick="excluirVeiculoTeste()" class="btn-cancel" style="background-color: #b91c1c;">🗑️ Excluir</button>
                 </div>
             </form>
             <button type="button" onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%; margin-top: 15px;">Voltar</button>
         </section>
 
-        <!-- TELA 4: CONSULTA E LEITURA -->
+        <!-- TELA 4: CONSULTA E LEITURA (VISÃO DO ELETRICISTA) -->
         <section id="screen-consulta" class="screen">
             <h3>📷 Consulta Rápida</h3>
             <div class="qr-mockup">
@@ -81,12 +81,13 @@
                 
                 <h4 id="res-codigo">BAT-0049</h4>
                 <p>Status: <span id="res-status" class="badge-status">ATIVA 🟢</span></p>
+                <p><strong>Marca:</strong> <span id="res-marca">Moura</span></p>
+                <p><strong>Modelo:</strong> <span id="res-modelo">M60FD</span></p>
                 <p><strong>Veículo:</strong> <span id="res-veiculo">Caminhão 05</span></p>
                 <p><strong>Instalada:</strong> <span id="res-instalacao">20/01/2026</span></p>
                 <p><strong>Garantia:</strong> <span id="res-garantia">20/07/2027</span></p>
                 <p><strong>Dias restantes:</strong> <span id="res-dias" class="txt-bold">178</span></p>
                 
-                <!-- NOVO BOTÃO: Apagar bateria consultada -->
                 <button onclick="excluirBateriaTeste()" class="btn-cancel" style="background-color: #b91c1c; width: 100%; margin-top: 15px; margin-bottom: 10px;">🗑️ Excluir esta Bateria</button>
                 <button onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%;">Fechar Consulta</button>
             </div>
