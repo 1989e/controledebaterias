@@ -72,7 +72,9 @@
             <div class="qr-mockup">
                 <p>Simulação de Leitura de Código</p>
                 <input type="text" id="qr-input-simulado" placeholder="Digite o código (Ex: BAT-0049)">
-                <button onclick="simularLeitura()" class="btn-main">Simular Scan</button>
+                <button onclick="simularLeitura()" class="btn-main" style="margin-bottom: 10px;">Simular Scan</button>
+                <!-- BOTÃO NOVO: Voltar direto para o menu inicial -->
+                <button onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%;">⬅️ Voltar ao Menu</button>
             </div>
 
             <!-- Resultado do Scan -->
