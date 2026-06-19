@@ -8,22 +8,43 @@
 </head>
 <body>
 
-    <!-- Menu de Navegação Superior Rápido -->
     <header class="main-header">
         <h2>TRANSJANOTTI</h2>
-        <p>Controle de Baterias</p>
+        <p id="sub-header">Controle de Baterias</p>
     </header>
 
     <main class="container">
+        
+        <!-- TELA DE LOGIN -->
+        <section id="screen-login" class="screen active">
+            <div class="login-card">
+                <h3>🔐 Acesso ao Sistema</h3>
+                <form id="form-login" onsubmit="fazerLogin(event)">
+                    <label>Usuário:</label>
+                    <select id="login-usuario">
+                        <option value="eletricista">👷 Eletricista</option>
+                        <option value="almoxarifado">📦 Almoxarifado / Admin</option>
+                    </select>
+                    
+                    <label>Senha:</label>
+                    <input type="password" id="login-senha" placeholder="Digite sua senha" required>
+                    
+                    <button type="submit" class="btn-main" style="background-color: #166534; margin-top: 15px;">Entrar</button>
+                </form>
+            </div>
+        </section>
+
         <!-- TELA 1: DASHBOARD SIMPLES -->
-        <section id="screen-dashboard" class="screen active">
-            <div class="alert-box green" id="dash-em-dia">🟢 48 Baterias em dia</div>
-            <div class="alert-box orange" id="dash-vencendo">🟠 5 Garantias vencendo em 30 dias</div>
-            <div class="alert-box red" id="dash-vencidas">🔴 2 Garantias vencidas</div>
+        <section id="screen-dashboard" class="screen">
+            <div class="user-badge"><span id="txt-user-logado">Usuário: </span> | <button onclick="fazerLogout()" class="btn-logout">Sair</button></div>
+            
+            <div class="alert-box green" id="dash-em-dia">🟢 -- Baterias em dia</div>
+            <div class="alert-box orange" id="dash-vencendo">🟠 -- Garantias vencendo em 30 dias</div>
+            <div class="alert-box red" id="dash-vencidas">🔴 -- Garantias vencidas</div>
             
             <div class="actions-grid">
-                <button onclick="switchScreen('screen-cadastro-bateria')" class="btn-main">➕ Nova Bateria</button>
-                <button onclick="switchScreen('screen-cadastro-veiculo')" class="btn-main">🚚 Novo Veículo</button>
+                <button onclick="switchScreen('screen-cadastro-bateria')" class="btn-main admin-only">➕ Nova Bateria</button>
+                <button onclick="switchScreen('screen-cadastro-veiculo')" class="btn-main admin-only">🚚 Gerenciar Veículos</button>
                 <button onclick="switchScreen('screen-consulta')" class="btn-main">📷 Consultar QR Code</button>
             </div>
         </section>
@@ -51,46 +72,69 @@
             </form>
         </section>
 
-        <!-- TELA 3: CADASTRO DE VEÍCULO -->
+        <!-- TELA 3: GERENCIAR VEÍCULOS -->
         <section id="screen-cadastro-veiculo" class="screen">
-            <h3>🚚 Cadastrar Novo Veículo</h3>
+            <h3>🚚 Gerenciar Veículos</h3>
             <form id="form-veiculo" onsubmit="salvarVeiculo(event)">
                 <label>Identificação do Veículo:</label>
                 <input type="text" id="vei-nome" placeholder="Ex: Caminhão 05" required>
                 
                 <div class="form-buttons">
                     <button type="submit" class="btn-save">💾 Salvar</button>
-                    <button type="button" onclick="excluirVeiculoTeste()" class="btn-cancel" style="background-color: #b91c1c;">🗑️ Excluir</button>
                 </div>
             </form>
+            
+            <div class="result-card">
+                <h4>Frota Cadastrada:</h4>
+                <ul id="lista-veiculos-excluir" style="margin-top: 10px; list-style: none;"></ul>
+            </div>
             <button type="button" onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%; margin-top: 15px;">Voltar</button>
         </section>
 
-        <!-- TELA 4: CONSULTA E LEITURA (VISÃO DO ELETRICISTA) -->
+        <!-- TELA 4: CONSULTA E LEITURA -->
         <section id="screen-consulta" class="screen">
             <h3>📷 Consulta Rápida</h3>
             <div class="qr-mockup">
-                <p>Simulação de Leitura de Código</p>
+                <p>Insira o código do QR Code:</p>
                 <input type="text" id="qr-input-simulado" placeholder="Digite o código (Ex: BAT-0049)">
-                <button onclick="simularLeitura()" class="btn-main" style="margin-bottom: 10px;">Simular Scan</button>
-                <!-- BOTÃO NOVO: Voltar direto para o menu inicial -->
+                <button onclick="simularLeitura()" class="btn-main" style="margin-bottom: 10px;">🔍 Buscar Bateria</button>
                 <button onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%;">⬅️ Voltar ao Menu</button>
             </div>
 
             <!-- Resultado do Scan -->
             <div id="resultado-scan" class="result-card hidden">
-                <div id="alerta-urgente" class="banner-urgente hidden">⚠️ VENCE EM 15 DIAS</div>
+                <div id="alerta-urgente" class="banner-urgente hidden">⚠️ VENCE EM MENOS DE 30 DIAS</div>
+                <div id="alerta-vencido" class="banner-vencido hidden">🚨 GARANTIA VENCIDA</div>
                 
                 <h4 id="res-codigo">BAT-0049</h4>
-                <p>Status: <span id="res-status" class="badge-status">ATIVA 🟢</span></p>
-                <p><strong>Marca:</strong> <span id="res-marca">Moura</span></p>
-                <p><strong>Modelo:</strong> <span id="res-modelo">M60FD</span></p>
-                <p><strong>Veículo:</strong> <span id="res-veiculo">Caminhão 05</span></p>
-                <p><strong>Instalada:</strong> <span id="res-instalacao">20/01/2026</span></p>
-                <p><strong>Garantia:</strong> <span id="res-garantia">20/07/2027</span></p>
-                <p><strong>Dias restantes:</strong> <span id="res-dias" class="txt-bold">178</span></p>
+                <p>Status: <span id="res-status">--</span></p>
+                <p><strong>Marca:</strong> <span id="res-marca">--</span></p>
+                <p><strong>Modelo:</strong> <span id="res-modelo">--</span></p>
+                <p><strong>Veículo Atual:</strong> <span id="res-veiculo">--</span></p>
+                <p><strong>Instalada em:</strong> <span id="res-instalacao">--</span></p>
+                <p><strong>Garantia até:</strong> <span id="res-garantia">--</span></p>
+                <p><strong>Dias restantes:</strong> <span id="res-dias" class="txt-bold">--</span></p>
                 
-                <button onclick="excluirBateriaTeste()" class="btn-cancel" style="background-color: #b91c1c; width: 100%; margin-top: 15px; margin-bottom: 10px;">🗑️ Excluir esta Bateria</button>
+                <!-- Ação: Instalar (Para Estoque) -->
+                <div id="box-instalar" class="hidden" style="margin-top:15px; border-top: 1px solid #ccc; padding-top: 15px;">
+                    <label>Instalar esta bateria em qual veículo?</label>
+                    <select id="select-veiculo-instalacao"></select>
+                    <button onclick="instalarBateria()" class="btn-save" style="width:100%; margin-top:10px;">🔧 Confirmar Instalação</button>
+                </div>
+
+                <!-- Ação: Retirar (Para Ativas) -->
+                <div id="box-retirar" class="hidden" style="margin-top:15px; border-top: 1px solid #ccc; padding-top: 15px;">
+                    <label>Motivo da Troca/Remoção:</label>
+                    <select id="select-motivo-remocao">
+                        <option value="Fim da vida útil">Fim da vida útil</option>
+                        <option value="Defeito">Defeito</option>
+                        <option value="Dano acidental">Dano acidental</option>
+                    </select>
+                    <button onclick="retirarBateria()" class="btn-cancel" style="background-color: #ea580c; width:100%; margin-top:10px;">🔄 Registrar Troca</button>
+                </div>
+                
+                <!-- Botão Excluir Registro (Bloqueado para Eletricista) -->
+                <button onclick="excluirBateriaRegistro()" class="btn-cancel admin-only" style="background-color: #b91c1c; width: 100%; margin-top: 25px; margin-bottom: 10px;">🗑️ Apagar Registro do Sistema</button>
                 <button onclick="switchScreen('screen-dashboard')" class="btn-cancel" style="width: 100%;">Fechar Consulta</button>
             </div>
         </section>
