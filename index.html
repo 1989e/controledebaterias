@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transjanotti - Controle de Baterias</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Menu de Navegação Superior Rápido -->
+    <header class="main-header">
+        <h2>TRANSJANOTTI</h2>
+        <p>Controle de Baterias</p>
+    </header>
+
+    <main class="container">
+        <!-- TELA 1: DASHBOARD SIMPLES -->
+        <section id="screen-dashboard" class="screen active">
+            <div class="alert-box green">🟢 48 Baterias em dia</div>
+            <div class="alert-box orange">🟠 5 Garantias vencendo em 30 dias</div>
+            <div class="alert-box red">🔴 2 Garantias vencidas</div>
+            
+            <div class="actions-grid">
+                <button onclick="switchScreen('screen-cadastro-bateria')" class="btn-main">➕ Nova Bateria</button>
+                <button onclick="switchScreen('screen-cadastro-veiculo')" class="btn-main">🚚 Novo Veículo</button>
+                <button onclick="switchScreen('screen-consulta')" class="btn-main">📷 Consultar QR Code</button>
+            </div>
+        </section>
+
+        <!-- TELA 2: CADASTRO DE BATERIA -->
+        <section id="screen-cadastro-bateria" class="screen">
+            <h3>➕ Cadastrar Nova Bateria</h3>
+            <form id="form-bateria" onsubmit="salvarBateria(event)">
+                <label>Código da Bateria:</label>
+                <input type="text" id="bat-codigo" placeholder="Ex: BAT-0049" required>
+                
+                <label>Marca:</label>
+                <input type="text" id="bat-marca" placeholder="Ex: Moura" required>
+                
+                <label>Modelo:</label>
+                <input type="text" id="bat-modelo" placeholder="Ex: M60FD" required>
+                
+                <label>Garantia (Meses):</label>
+                <input type="number" id="bat-garantia" placeholder="Ex: 18" required>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">💾 Salvar</button>
+                    <button type="button" onclick="switchScreen('screen-dashboard')" class="btn-cancel">Voltar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TELA 3: CADASTRO DE VEÍCULO -->
+        <section id="screen-cadastro-veiculo" class="screen">
+            <h3>🚚 Cadastrar Novo Veículo</h3>
+            <form id="form-veiculo" onsubmit="salvarVeiculo(event)">
+                <label>Identificação do Veículo:</label>
+                <input type="text" id="vei-nome" placeholder="Ex: Caminhão 05" required>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">💾 Salvar</button>
+                    <button type="button" onclick="switchScreen('screen-dashboard')" class="btn-cancel">Voltar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- TELA 4: CONSULTA E LEITURA (VISÃO DO ELETRICISTA) -->
+        <section id="screen-consulta" class="screen">
+            <h3>📷 Consulta Rápida</h3>
+            <div class="qr-mockup">
+                <p>Simulação de Leitura de Código</p>
+                <input type="text" id="qr-input-simulado" placeholder="Digite o código (Ex: BAT-0049)">
+                <button onclick="simularLeitura()" class="btn-main">Simular Scan</button>
+            </div>
+
+            <!-- Resultado do Scan -->
+            <div id="resultado-scan" class="result-card hidden">
+                <div id="alerta-urgente" class="banner-urgente hidden">⚠️ VENCE EM 15 DIAS</div>
+                
+                <h4 id="res-codigo">BAT-0049</h4>
+                <p>Status: <span id="res-status" class="badge-status">ATIVA 🟢</span></p>
+                <p><strong>Veículo:</strong> <span id="res-veiculo">Caminhão 05</span></p>
+                <p><strong>Instalada:</strong> <span id="res-instalacao">20/01/2026</span></p>
+                <p><strong>Garantia:</strong> <span id="res-garantia">20/07/2027</span></p>
+                <p><strong>Dias restantes:</strong> <span id="res-dias" class="txt-bold">178</span></p>
+                
+                <button onclick="switchScreen('screen-dashboard')" class="btn-cancel">Fechar Consulta</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
